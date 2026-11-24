@@ -10,13 +10,13 @@ Copy-Item .env.example .env.local
 npm run dev
 ```
 
-แก้ `.env.local` เพื่อใส่ URL รูป QR จริง, ชื่อบัญชี และ URL แบบฟอร์มบน VPS ทั้งสอง URL ควรใช้ HTTPS หน้าเว็บจะยังไม่แสดง QR หรือเปิดปุ่มแจ้งบริจาคจนกว่าจะตั้งค่า
+หน้าเว็บใช้รูป QR ที่ `public/qr/ReceiveMoney_QR.png` โดยอัตโนมัติ แก้ `.env.local` เพื่อใส่ชื่อบัญชีและ URL แบบฟอร์มบน VPS (HTTPS) ปุ่มแจ้งบริจาคจะยังไม่เปิดจนกว่าจะตั้งค่า URL แบบฟอร์ม หากต้องการใช้รูป QR จาก URL อื่น สามารถตั้ง `VITE_DONATION_QR_URL` เพื่อแทนค่าเริ่มต้นได้
 
 ## เผยแพร่
 
 1. Push โค้ดไปที่ repository `NuttaScholar/Donate` บน branch `main`
 2. เข้า **Settings → Pages → Build and deployment → Source** แล้วเลือก **GitHub Actions**
-3. ใน **Settings → Secrets and variables → Actions → Variables** ตั้ง `DONATION_QR_URL`, `ACCOUNT_NAME`, `DONATION_FORM_URL`
+3. ใน **Settings → Secrets and variables → Actions → Variables** ตั้ง `ACCOUNT_NAME` และ `DONATION_FORM_URL` ส่วน `DONATION_QR_URL` ใช้เฉพาะเมื่อต้องการใช้รูปอื่นแทนไฟล์ในโปรเจกต์
 4. Workflow จะเผยแพร่ที่ `https://nuttascholar.github.io/Donate/`
 
 หากเปลี่ยนชื่อ repository หรือใช้โดเมนส่วนตัว ให้แก้ `base` ใน `vite.config.js` ให้ตรงกับ path ของเว็บ

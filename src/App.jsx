@@ -1,5 +1,5 @@
 const formUrl = import.meta.env.VITE_DONATION_FORM_URL
-const qrUrl = import.meta.env.VITE_DONATION_QR_URL
+const qrUrl = import.meta.env.VITE_DONATION_QR_URL || `${import.meta.env.BASE_URL}qr/ReceiveMoney_QR.png`
 const accountName = import.meta.env.VITE_ACCOUNT_NAME
 
 function App() {

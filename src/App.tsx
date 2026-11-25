@@ -1,4 +1,6 @@
-const formUrl = import.meta.env.VITE_DONATION_FORM_URL;
+import DonationDialog from './DonationDialog'
+
+const apiUrl = import.meta.env.VITE_DONATION_API_URL;
 const qrUrl =
   import.meta.env.VITE_DONATION_QR_URL ||
   `${import.meta.env.BASE_URL}qr/ReceiveMoney_QR.png`;
@@ -121,20 +123,7 @@ function App() {
             <p className="note">
               กรุณาตรวจสอบชื่อบัญชีในแอปธนาคารก่อนยืนยันการโอน
             </p>
-            {formUrl ? (
-              <a
-                className="button accent"
-                href={formUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                แจ้งบริจาค / แนบสลิป <b>→</b>
-              </a>
-            ) : (
-              <div className="button disabled" aria-disabled="true">
-                แบบฟอร์มแจ้งบริจาคจะเปิดให้ใช้เร็ว ๆ นี้
-              </div>
-            )}
+            <DonationDialog apiUrl={apiUrl} />
             <small className="privacy">
               ข้อมูลการแจ้งบริจาคจะส่งไปยังระบบบนเซิร์ฟเวอร์ที่แยกจาก GitHub
               Pages

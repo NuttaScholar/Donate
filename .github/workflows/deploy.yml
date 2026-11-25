@@ -22,7 +22,7 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          VITE_DONATION_FORM_URL: ${{ vars.DONATION_FORM_URL }}
+          VITE_DONATION_API_URL: ${{ vars.DONATION_API_URL }}
           VITE_DONATION_QR_URL: ${{ vars.DONATION_QR_URL }}
           VITE_ACCOUNT_NAME: ${{ vars.ACCOUNT_NAME }}
       - uses: actions/upload-pages-artifact@v3

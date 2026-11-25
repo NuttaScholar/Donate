@@ -1,6 +1,5 @@
 import DonationDialog from './DonationDialog'
 
-const apiUrl = import.meta.env.VITE_DONATION_API_URL;
 const qrUrl =
   import.meta.env.VITE_DONATION_QR_URL ||
   `${import.meta.env.BASE_URL}qr/ReceiveMoney_QR.png`;
@@ -123,7 +122,7 @@ function App() {
             <p className="note">
               กรุณาตรวจสอบชื่อบัญชีในแอปธนาคารก่อนยืนยันการโอน
             </p>
-            <DonationDialog apiUrl={apiUrl} />
+            <DonationDialog />
             <small className="privacy">
               ข้อมูลการแจ้งบริจาคจะส่งไปยังระบบบนเซิร์ฟเวอร์ที่แยกจาก GitHub
               Pages

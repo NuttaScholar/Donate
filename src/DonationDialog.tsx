@@ -1,9 +1,10 @@
 import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { isDonationApiConfigured, submitDonation } from './API/donations'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 
-export default function DonationDialog({ apiUrl }: { apiUrl?: string }) {
+export default function DonationDialog() {
   const dialog = useRef<HTMLDialogElement>(null)
   const form = useRef<HTMLFormElement>(null)
   const [slip, setSlip] = useState<File | null>(null)
@@ -30,23 +31,22 @@ export default function DonationDialog({ apiUrl }: { apiUrl?: string }) {
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (!slip || !apiUrl || submitting) return
+    if (!slip || !isDonationApiConfigured() || submitting) return
     const fields = new FormData(event.currentTarget)
     const amount = Number(fields.get('amount'))
     if (!Number.isFinite(amount) || amount <= 0) {
       setSubmitError('กรุณาระบุยอดบริจาคที่มากกว่า 0 บาท')
       return
     }
-    const data = new FormData()
-    data.append('donorName', String(fields.get('donorName') ?? '').trim())
-    data.append('amount', String(amount))
-    data.append('message', String(fields.get('message') ?? '').trim())
-    data.append('slip', slip)
     setSubmitting(true)
     setSubmitError('')
     try {
-      const response = await fetch(apiUrl, { method: 'POST', body: data })
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      await submitDonation({
+        donorName: String(fields.get('donorName') ?? '').trim(),
+        amount,
+        message: String(fields.get('message') ?? '').trim(),
+        slip,
+      })
       form.current?.reset()
       setSlip(null)
       setSubmitted(true)
@@ -68,8 +68,8 @@ export default function DonationDialog({ apiUrl }: { apiUrl?: string }) {
         {slip && !fileError && <p className="selected-file">ไฟล์ที่เลือก: {slip.name}</p>}
         {fileError && <p className="form-error" role="alert">{fileError}</p>}
         {submitError && <p className="form-error" role="alert">{submitError}</p>}
-        {!apiUrl && <p className="form-notice">แบบฟอร์มพร้อมใช้งานหลังตั้งค่า API บน VPS</p>}
-        <div className="dialog-actions"><button type="button" className="cancel-button" onClick={close} disabled={submitting}>ยกเลิก</button><button type="submit" className="button accent" disabled={!apiUrl || submitting || !!fileError}>{submitting ? 'กำลังส่ง...' : 'ส่งข้อมูลการบริจาค'}</button></div>
+        {!isDonationApiConfigured() && <p className="form-notice">แบบฟอร์มพร้อมใช้งานหลังตั้งค่า API บน VPS</p>}
+        <div className="dialog-actions"><button type="button" className="cancel-button" onClick={close} disabled={submitting}>ยกเลิก</button><button type="submit" className="button accent" disabled={!isDonationApiConfigured() || submitting || !!fileError}>{submitting ? 'กำลังส่ง...' : 'ส่งข้อมูลการบริจาค'}</button></div>
         <p className="dialog-privacy">สลิปและข้อความจะถูกส่งไปยังระบบบน VPS เพื่อใช้ตรวจสอบรายการบริจาค</p>
       </form>}
     </dialog>

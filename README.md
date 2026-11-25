@@ -12,9 +12,11 @@ npm run dev
 
 ตรวจ TypeScript ด้วย `npm run typecheck` และสร้างไฟล์เผยแพร่ด้วย `npm run build`
 
-หน้าเว็บใช้รูป QR ที่ `public/qr/ReceiveMoney_QR.png` โดยอัตโนมัติ แก้ `.env.local` เพื่อใส่ชื่อบัญชีและ URL API บน VPS (HTTPS) หากต้องการใช้รูป QR จาก URL อื่น สามารถตั้ง `VITE_DONATION_QR_URL` เพื่อแทนค่าเริ่มต้นได้
+หน้าเว็บใช้รูป QR ที่ `public/qr/ReceiveMoney_QR.png` โดยอัตโนมัติ ในเครื่อง `npm run dev` จะส่ง `/api/donations` ผ่าน Vite proxy ไปยัง Docker API ที่ `http://127.0.0.1:18080/donations` จึงทดสอบได้โดยไม่ต้องตั้ง URL เพิ่ม หากต้องการใช้รูป QR จาก URL อื่น สามารถตั้ง `VITE_DONATION_QR_URL` ได้
 
-ปุ่มแจ้งบริจาคเปิด Dialog สำหรับกรอกชื่อ (ไม่บังคับ), ยอดบริจาค, ข้อความติชม และแนบสลิป JPG/PNG/WebP ขนาดไม่เกิน 5 MB ปุ่มส่งจะเปิดเมื่อกำหนด `VITE_DONATION_API_URL` เท่านั้น โดยส่ง `POST multipart/form-data` ไปยัง URL นี้ พร้อมฟิลด์ `donorName`, `amount`, `message`, `slip` ฝั่ง API ต้องตรวจสอบข้อมูลและไฟล์ซ้ำ จำกัดอัตราคำขอ และอนุญาต CORS จากโดเมนหน้าเว็บ
+ปุ่มแจ้งบริจาคเปิด Dialog สำหรับกรอกชื่อ (ไม่บังคับ), ยอดบริจาค, ข้อความติชม และแนบสลิป JPG/PNG/WebP ขนาดไม่เกิน 5 MB โดยส่ง `POST multipart/form-data` พร้อมฟิลด์ `donorName`, `amount`, `message`, `slip` ไปยัง Backend API
+
+บน GitHub Pages ต้องตั้ง `DONATION_API_URL` เป็น URL **HTTPS สาธารณะ** ที่ลงท้าย `/donations` เช่น `https://api.example.com/donations` ชื่อ Docker Compose `webdonate` และพอร์ต loopback `127.0.0.1:18080` ใช้จากเบราว์เซอร์ผู้บริจาคไม่ได้ หากยังไม่ตั้ง URL ปุ่มส่งจะปิดไว้ Backend ต้องอนุญาต CORS จาก `https://nuttascholar.github.io`
 
 
 ## เผยแพร่

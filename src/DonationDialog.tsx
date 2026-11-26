@@ -1,15 +1,17 @@
 import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
-import { isDonationApiConfigured, submitDonation } from './API/donations'
+import { DonationApiError, isDonationApiConfigured, submitDonation } from './API/donations'
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 
 export default function DonationDialog() {
   const dialog = useRef<HTMLDialogElement>(null)
+  const rejectionDialog = useRef<HTMLDialogElement>(null)
   const form = useRef<HTMLFormElement>(null)
   const [slip, setSlip] = useState<File | null>(null)
   const [fileError, setFileError] = useState('')
   const [submitError, setSubmitError] = useState('')
+  const [rejectionReason, setRejectionReason] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
@@ -50,8 +52,10 @@ export default function DonationDialog() {
       form.current?.reset()
       setSlip(null)
       setSubmitted(true)
-    } catch {
-      setSubmitError('ส่งข้อมูลไม่สำเร็จ กรุณาลองอีกครั้ง หรือติดต่อผู้ดูแลเว็บ')
+    } catch (error) {
+      setRejectionReason(error instanceof DonationApiError
+        ? error.message : 'ส่งข้อมูลไม่สำเร็จ กรุณาลองอีกครั้ง หรือติดต่อผู้ดูแลเว็บ')
+      rejectionDialog.current?.showModal()
     } finally { setSubmitting(false) }
   }
 
@@ -72,6 +76,13 @@ export default function DonationDialog() {
         <div className="dialog-actions"><button type="button" className="cancel-button" onClick={close} disabled={submitting}>ยกเลิก</button><button type="submit" className="button accent" disabled={!isDonationApiConfigured() || submitting || !!fileError}>{submitting ? 'กำลังส่ง...' : 'ส่งข้อมูลการบริจาค'}</button></div>
         <p className="dialog-privacy">สลิปและข้อความจะถูกส่งไปยังระบบบน VPS เพื่อใช้ตรวจสอบรายการบริจาค</p>
       </form>}
+    </dialog>
+    <dialog ref={rejectionDialog} className="rejection-dialog" aria-labelledby="rejection-title" aria-describedby="rejection-description">
+      <div className="rejection-icon" aria-hidden="true">!</div>
+      <h2 id="rejection-title">แจ้งบริจาคไม่สำเร็จ</h2>
+      <p id="rejection-description">{rejectionReason}</p>
+      <p className="rejection-hint">ข้อมูลที่กรอกยังอยู่ในแบบฟอร์ม คุณสามารถแก้ไขแล้วส่งอีกครั้ง</p>
+      <button type="button" className="button dark" onClick={() => rejectionDialog.current?.close()}>กลับไปแก้ไข</button>
     </dialog>
   </>
 }

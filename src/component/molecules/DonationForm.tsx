@@ -1,5 +1,7 @@
 import type { ChangeEvent, FormEvent, RefObject } from "react";
 import ActionButton from "../atoms/ActionButton";
+import { projectOptions } from "../../config/projects";
+import ProjectSelect from "./ProjectSelect";
 
 type Props = {
   formRef: RefObject<HTMLFormElement | null>;
@@ -39,16 +41,7 @@ export default function DonationForm({
           placeholder="ชื่อหรือชื่อเล่น"
         />
       </label>
-      <label className="field">
-        โปรเจกต์ที่ต้องการสนับสนุน <em>*</em>
-        <select name="project" defaultValue="" required>
-          <option value="" disabled>
-            เลือกโปรเจกต์
-          </option>
-          <option value="all">สนับสนุนทุกโปรเจกต์</option>
-          <option value="webdonate">WebDonate</option>
-        </select>
-      </label>
+      <ProjectSelect options={projectOptions} />
       <label className="field">
         ข้อความติชม <span>(ไม่บังคับ)</span>
         <textarea

@@ -1,6 +1,8 @@
+import type { ProjectKey } from '../config/projects'
+
 export type DonationSubmission = {
   donorName: string
-  project: 'all' | 'webdonate'
+  project: ProjectKey
   message: string
   slip: File
 }

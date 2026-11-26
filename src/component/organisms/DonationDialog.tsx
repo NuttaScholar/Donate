@@ -9,6 +9,7 @@ import SectionKicker from "../atoms/SectionKicker";
 import DonationForm from "../molecules/DonationForm";
 import SubmissionSuccess from "../molecules/SubmissionSuccess";
 import SubmissionRejection from "../molecules/SubmissionRejection";
+import { isProjectKey } from "../../config/projects";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -47,7 +48,7 @@ export default function DonationDialog() {
     if (!slip || !isDonationApiConfigured() || submitting) return;
     const fields = new FormData(event.currentTarget);
     const project = fields.get("project");
-    if (project !== "all" && project !== "webdonate") {
+    if (!isProjectKey(project)) {
       setSubmitError("กรุณาเลือกโปรเจกต์ที่ต้องการสนับสนุน");
       return;
     }

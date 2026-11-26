@@ -1,14 +1,13 @@
 import type { ProjectKey } from '../config/projects'
+import { donationApiUrl } from './config'
 
 export type DonationSubmission = {
   donorName: string
+  publicName: boolean
   project: ProjectKey
   message: string
   slip: File
 }
-
-const donationApiUrl = import.meta.env.VITE_DONATION_API_URL ||
-  (import.meta.env.DEV ? '/api/donations' : undefined)
 
 export class DonationApiError extends Error {
   constructor(public readonly status: number | null, message: string) {
@@ -44,6 +43,7 @@ export async function submitDonation(submission: DonationSubmission): Promise<vo
 
   const body = new FormData()
   body.append('donorName', submission.donorName)
+  body.append('publicName', String(submission.publicName))
   body.append('project', submission.project)
   body.append('message', submission.message)
   body.append('slip', submission.slip)

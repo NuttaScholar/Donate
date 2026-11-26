@@ -57,6 +57,7 @@ export default function DonationDialog() {
     try {
       await submitDonation({
         donorName: String(fields.get("donorName") ?? "").trim(),
+        publicName: fields.get("publicName") === "on",
         project,
         message: String(fields.get("message") ?? "").trim(),
         slip,

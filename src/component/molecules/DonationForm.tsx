@@ -40,7 +40,9 @@ export default function DonationForm({
           maxLength={80}
           placeholder="ชื่อหรือชื่อเล่น"
         />
+        <small>ชื่อนี้จะแสดงพร้อมยอดสะสมและโปรเจกต์ในส่วนขอบคุณผู้สนับสนุน หลังแอดมินตรวจสอบยอดแล้ว หากไม่ต้องการแสดงชื่อ เว้นว่างไว้ได้</small>
       </label>
+      <label className="public-name-option"><input name="publicName" type="checkbox" /> แสดงชื่อและยอดสะสมในส่วนขอบคุณผู้สนับสนุน</label>
       <ProjectSelect options={projectOptions} />
       <label className="field">
         ข้อความติชม <span>(ไม่บังคับ)</span>

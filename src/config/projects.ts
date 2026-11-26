@@ -4,6 +4,7 @@ export const projectOptions = [
 ] as const;
 
 export type ProjectKey = (typeof projectOptions)[number]["value"];
+export type ProjectOption = (typeof projectOptions)[number];
 
 export function isProjectKey(
   value: FormDataEntryValue | null,

@@ -1,6 +1,6 @@
 export type DonationSubmission = {
   donorName: string
-  amount: number
+  project: 'all' | 'webdonate'
   message: string
   slip: File
 }
@@ -21,7 +21,7 @@ function rejectionReason(status: number, apiError?: string): string {
       case 'Slip exceeds 5 MB': return 'ไฟล์สลิปมีขนาดเกิน 5 MB กรุณาเลือกไฟล์ที่เล็กลง'
       case 'Invalid upload': return 'ไฟล์ที่แนบไม่ถูกต้อง กรุณาเลือกสลิป JPG, PNG หรือ WebP'
       case 'Invalid slip image': return 'อ่านภาพสลิปไม่ได้ กรุณาเลือกภาพใหม่ที่ชัดเจน'
-      case 'Invalid donation data': return 'ข้อมูลการบริจาคไม่ถูกต้อง กรุณาตรวจสอบยอดและข้อมูลในแบบฟอร์ม'
+      case 'Invalid donation data': return 'ข้อมูลการบริจาคไม่ถูกต้อง กรุณาตรวจสอบโปรเจกต์และข้อมูลในแบบฟอร์ม'
       default: return 'ข้อมูลที่ส่งไม่ถูกต้อง กรุณาตรวจสอบแบบฟอร์มแล้วลองอีกครั้ง'
     }
   }
@@ -42,7 +42,7 @@ export async function submitDonation(submission: DonationSubmission): Promise<vo
 
   const body = new FormData()
   body.append('donorName', submission.donorName)
-  body.append('amount', String(submission.amount))
+  body.append('project', submission.project)
   body.append('message', submission.message)
   body.append('slip', submission.slip)
 

@@ -1,6 +1,14 @@
 export const projectOptions = [
-  { value: "all", label: "สนับสนุนทุกโปรเจกต์" },
-  { value: "webdonate", label: "WebDonate" },
+  {
+    value: "smartbiz",
+    label: "SmartBiz",
+    url: "https://github.com/NuttaScholar/SmartBiz",
+  },
+  {
+    value: "openlinkiot",
+    label: "OpenLinkIOT",
+    url: "https://github.com/NuttaScholar/OpenLinkIoT",
+  },
 ] as const;
 
 export type ProjectKey = (typeof projectOptions)[number]["value"];

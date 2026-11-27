@@ -46,7 +46,16 @@ export default function SupporterProjectGroup({
       className="supporters-category"
       aria-labelledby={`supporters-${project.value}`}
     >
-      <h3 id={`supporters-${project.value}`}>{project.label}</h3>
+      <h3 id={`supporters-${project.value}`}>
+        <a
+          href={project.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`ดูโปรเจกต์ ${project.label} บน GitHub`}
+        >
+          {project.label} <span aria-hidden="true">↗</span>
+        </a>
+      </h3>
       <div className="supporters-panel">
         {supporters.length > 0 && (
           <ol className="supporters-list">

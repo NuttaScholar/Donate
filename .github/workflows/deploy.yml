@@ -1,15 +1,19 @@
 name: Deploy to GitHub Pages
+
 on:
   push:
     branches: [main]
   workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
   group: pages
   cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,6 +23,20 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - uses: actions/configure-pages@v5
+      - name: Check donation API URL
+        env:
+          DONATION_API_URL: ${{ vars.DONATION_API_URL }}
+        run: |
+          node --input-type=module -e '
+            const value = process.env.DONATION_API_URL;
+            let url;
+            try { url = new URL(value); } catch { /* handled below */ }
+            if (!url || url.protocol !== "https:" || url.pathname !== "/donations" || url.search || url.hash) {
+              console.error("Set the DONATION_API_URL Actions variable to an HTTPS URL ending in /donations.");
+              process.exit(1);
+            }
+          '
       - run: npm ci
       - run: npm run build
         env:
@@ -27,6 +45,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
   deploy:
     environment:
       name: github-pages

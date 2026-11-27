@@ -16,7 +16,7 @@ npm run dev
 
 ตัวเลือกโปรเจกต์ของช่อง Selector อยู่ใน `src/config/projects.ts` และส่งให้ `ProjectSelect` ผ่าน prop `options` หากเพิ่มตัวเลือกใหม่ ต้องให้ Backend ยอมรับค่า `project` นั้นด้วย
 
-หน้าเว็บใช้รูป QR ที่ `public/qr/ReceiveMoney_QR.png` โดยอัตโนมัติ ในเครื่อง `npm run dev` จะส่ง `/api/donations` ผ่าน Vite proxy ไปยัง Docker API ที่ `http://127.0.0.1:18080/donations` จึงทดสอบได้โดยไม่ต้องตั้ง URL เพิ่ม หากต้องการใช้รูป QR จาก URL อื่น สามารถตั้ง `VITE_DONATION_QR_URL` ได้
+หน้าเว็บใช้รูป QR ที่ `public/qr/ReceiveMoney_QR.png` โดยอัตโนมัติ ในเครื่อง `npm run dev` จะส่ง `/api/donations` ผ่าน Vite proxy ไปยัง Docker API ที่ `http://127.0.0.1:18080/donations` จึงทดสอบได้โดยไม่ต้องตั้ง URL เพิ่ม หากต้องการเปลี่ยน QR ให้เปลี่ยนไฟล์รูปนี้
 
 ปุ่มแจ้งบริจาคเปิด Dialog สำหรับกรอกชื่อ (ไม่บังคับ), เลือกโปรเจกต์ (`all` หรือ `webdonate`), ข้อความติชม และแนบสลิป JPG/PNG/WebP ขนาดไม่เกิน 5 MB โดยส่ง `POST multipart/form-data` พร้อมฟิลด์ `donorName`, `project`, `message`, `slip` ไปยัง Backend API ผู้บริจาคไม่ต้องกรอกยอด แอดมินจะตรวจยอดจากสลิป
 หากผู้บริจาคกรอกชื่อและเลือกช่องยินยอมแสดงชื่อ ระบบจะส่ง `publicName=true` ด้วย ส่วน “ขอบคุณผู้สนับสนุน” โหลดจาก `GET /supporters?project=...` แยกตาม `projectOptions` โดยแสดงเฉพาะยอดที่แอดมินยืนยันแล้ว และเรียงยอดสะสมจากมากไปน้อยในแต่ละโปรเจกต์
@@ -28,7 +28,7 @@ npm run dev
 
 1. Push โค้ดไปที่ repository `NuttaScholar/Donate` บน branch `main`
 2. เข้า **Settings → Pages → Build and deployment → Source** แล้วเลือก **GitHub Actions**
-3. ใน **Settings → Secrets and variables → Actions → Variables** ตั้ง `ACCOUNT_NAME` และ `DONATION_API_URL` ส่วน `DONATION_QR_URL` ใช้เฉพาะเมื่อต้องการใช้รูปอื่นแทนไฟล์ในโปรเจกต์
+3. ใน **Settings → Secrets and variables → Actions → Variables** ตั้ง `DONATION_API_URL` และอาจตั้ง `ACCOUNT_NAME` เพื่อแสดงชื่อบัญชีใต้ QR
 4. Workflow จะเผยแพร่ที่ `https://nuttascholar.github.io/Donate/`
 
 หากเปลี่ยนชื่อ repository หรือใช้โดเมนส่วนตัว ให้แก้ `base` ใน `vite.config.ts` ให้ตรงกับ path ของเว็บ

@@ -115,6 +115,7 @@ export default function DonationDialog() {
             ×
           </button>
         </div>
+        {!submitted && <p className="name-warning">กรุณาอย่าใช้ชื่อที่มีคำหยาบหรือดูหมิ่นผู้อื่น หากพบชื่อที่ไม่เหมาะสม ผู้ดูแลจะซ่อนชื่อจากรายชื่อผู้สนับสนุน</p>}
         {submitted ? (
           <SubmissionSuccess onClose={close} />
         ) : (
